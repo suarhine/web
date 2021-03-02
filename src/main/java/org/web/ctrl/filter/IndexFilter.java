@@ -65,22 +65,17 @@ public class IndexFilter implements Filter {
                             ? null : value[1].split(" *: *", 2);
                     try {
                         switch (value[2]) {
-                        case "":
+                        case "" ->
                             auth.add(new Auth(path, method, null, ' '));
-                            break;
-                        case "*":
+                        case "*" ->
                             auth.add(new Auth(path, method, null, '*'));
-                            break;
-                        case "+":
+                        case "+" ->
                             auth.add(new Auth(path, method, null, '+'));
-                            break;
-                        case "-":
+                        case "-" ->
                             auth.add(new Auth(path, method, null, '-'));
-                            break;
-                        case "#":
+                        case "#" ->
                             auth.add(new Auth(path, method, null, '#'));
-                            break;
-                        default:
+                        default -> {
                             char flag = 0;
                             var matcher = Pattern.compile(
                                     "(^| *,) *(\\+) *(, *|$)"
@@ -96,6 +91,7 @@ public class IndexFilter implements Filter {
                             var role = value[2].isEmpty()
                                     ? null : value[2].split(" *, *");
                             auth.add(new Auth(path, method, role, flag));
+                        }
                         }
                     } catch (ArrayIndexOutOfBoundsException e) {
                         auth.add(new Auth(path, method, null, ' '));
